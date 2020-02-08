@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
 
 fn main() {
-    let mut t = Tree::new(10);
+    let mut t = Node::new(10);
     t.print();
     t.add(1);
     t.add(15);
@@ -16,7 +16,7 @@ fn main() {
     test(&t, 100);
 }
 
-fn test(t : &Tree, x :i64) {
+fn test(t : &Node, x :i64) {
     if t.find(x) {
         println!("{} exists", x);
     } else {
@@ -25,15 +25,15 @@ fn test(t : &Tree, x :i64) {
 }
 
 #[derive(Default)]
-struct Tree {
+struct Node {
     root: i64,
-    left: Option<Box<Tree>>,
-    right: Option<Box<Tree>>,
+    left: Option<Box<Node>>,
+    right: Option<Box<Node>>,
 }
 
-impl Tree {
-    fn new(root: i64) -> Tree {
-        Tree {
+impl Node {
+    fn new(root: i64) -> Node {
+        Node {
             root: root,
             ..Default::default()
         }
@@ -42,8 +42,8 @@ impl Tree {
     fn print(&self) {
         println!("{}", self.root);
 
-        let mut q = VecDeque::<&Option<Box<Tree>>>::new();
-        let mut q_next = VecDeque::<&Option<Box<Tree>>>::new();
+        let mut q = VecDeque::<&Option<Box<Node>>>::new();
+        let mut q_next = VecDeque::<&Option<Box<Node>>>::new();
         q.push_back(& self.left);
         q.push_back(& self.right);
 
@@ -94,7 +94,7 @@ impl Tree {
         match target {
              Some(t) => t.add(x),
              None => {
-                let newNode = Tree::new(x);
+                let newNode = Node::new(x);
                 let boxedNode = Some(Box::new(newNode));
                 *target = boxedNode;
             }
